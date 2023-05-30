@@ -5,12 +5,28 @@ import (
 	"os"
 	"path/filepath"
 	"text/template"
+	"encoding/json"
+	"io/ioutil"
 
 	"github.com/labstack/echo/v4"
 )
 
-type Data struct {
+type MainData struct {
 	Port string
+}
+
+type EnvData struct {
+	Mongouri string
+}
+
+type setupData struct {
+	DBname string
+}
+
+type InputData struct {
+	Port string `json:"port"`
+	Mongouri string `json:mongouri`
+	DBname string `json:dbname`
 }
 
 func generateCodeFile(templatePath string, folderPath string, outputPath string, data interface{}) error {
@@ -44,16 +60,33 @@ func generateCodeFile(templatePath string, folderPath string, outputPath string,
 }
 
 func getInputs(c echo.Context) error{
-	createMain("6050")
-	createEnv()
-	createRoute()
+	// Read the request body
+	body, err := ioutil.ReadAll(c.Request().Body)
+	if err != nil {
+		return err
+	}
+
+	// Parse the JSON data into the InputData struct
+	var inputData InputData
+	err = json.Unmarshal(body, &inputData)
+	if err != nil {
+		return err
+	}
+
+	// Use the inputData in your code generation functions
+	createMain(inputData.Port)
+	createEnv(inputData.Mongouri)
+	createRoute(nil)
+	createResponse(nil)
+	createModel(nil)
+	createSetup(inputData.DBname)
 
 	return c.JSON(http.StatusCreated,"Successfully code generated")
 }
 
 func createMain(Port string) {
 	// Define the data for the template
-	data := Data{Port}
+	data := MainData{Port}
 
 	// Generate the code file
 	err := generateCodeFile("main.tmpl", "./output", "main.go", data)
@@ -62,9 +95,9 @@ func createMain(Port string) {
 	}
 }
 
-func createEnv() {
+func createEnv(Mongouri string) {
 	// Define the data for the template
-	data := Data{}
+	data := EnvData{Mongouri}
 
 	// Generate the code file
 	err := generateCodeFile("env.tmpl", "./output", ".env", data)
@@ -73,10 +106,7 @@ func createEnv() {
 	}
 }
 
-func createRoute() {
-	// Define the data for the template
-	data := Data{}
-
+func createRoute(data interface{}) {
 	// Generate the code file
 	err := generateCodeFile("route.tmpl", "./output/routes", "route.go", data)
 	if err != nil {
@@ -84,10 +114,7 @@ func createRoute() {
 	}
 }
 
-func createResponse() {
-	// Define the data for the template
-	data := Data{}
-
+func createResponse(data interface{}) {
 	// Generate the code file
 	err := generateCodeFile("response.tmpl", "./output/responses", "response.go", data)
 	if err != nil {
@@ -95,11 +122,29 @@ func createResponse() {
 	}
 }
 
+func createModel(data interface{}) {
+	// Generate the code file
+	err := generateCodeFile("model.tmpl", "./output/models", "model.go", data)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func createSetup(DBname string) {
+	// Define the data for the template
+	data := EnvData{DBname}
+
+	// Generate the code file
+	err := generateCodeFile("setup.tmpl", "./output/configs", "setup.go", data)
+	if err != nil {
+		panic(err)
+	}
+}
+
 func main() {
 	e := echo.New()
+
 	e.POST("/input", getInputs)
-
-
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
