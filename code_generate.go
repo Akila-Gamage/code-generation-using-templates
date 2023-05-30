@@ -16,17 +16,22 @@ type MainData struct {
 }
 
 type EnvData struct {
-	Mongouri string
+	MongoUri string
 }
 
 type setupData struct {
 	DBname string
 }
 
+type controllerData struct{
+	ColletionName string
+}
+
 type InputData struct {
 	Port string `json:"port"`
-	Mongouri string `json:mongouri`
+	MongoUri string `json:mongouri`
 	DBname string `json:dbname`
+	CollectionName string `json:collectionname`
 }
 
 func generateCodeFile(templatePath string, folderPath string, outputPath string, data interface{}) error {
@@ -75,11 +80,13 @@ func getInputs(c echo.Context) error{
 
 	// Use the inputData in your code generation functions
 	createMain(inputData.Port)
-	createEnv(inputData.Mongouri)
+	createEnv(inputData.MongoUri)
 	createRoute(nil)
 	createResponse(nil)
 	createModel(nil)
 	createSetup(inputData.DBname)
+	createEnvc(nil)
+	createController(inputData.CollectionName)
 
 	return c.JSON(http.StatusCreated,"Successfully code generated")
 }
@@ -89,7 +96,7 @@ func createMain(Port string) {
 	data := MainData{Port}
 
 	// Generate the code file
-	err := generateCodeFile("main.tmpl", "./output", "main.go", data)
+	err := generateCodeFile("./templates/main.tmpl", "./output", "main.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -100,7 +107,7 @@ func createEnv(Mongouri string) {
 	data := EnvData{Mongouri}
 
 	// Generate the code file
-	err := generateCodeFile("env.tmpl", "./output", ".env", data)
+	err := generateCodeFile("./templates/env.tmpl", "./output", ".env", data)
 	if err != nil {
 		panic(err)
 	}
@@ -108,7 +115,7 @@ func createEnv(Mongouri string) {
 
 func createRoute(data interface{}) {
 	// Generate the code file
-	err := generateCodeFile("route.tmpl", "./output/routes", "route.go", data)
+	err := generateCodeFile("./templates/route.tmpl", "./output/routes", "route.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -116,7 +123,7 @@ func createRoute(data interface{}) {
 
 func createResponse(data interface{}) {
 	// Generate the code file
-	err := generateCodeFile("response.tmpl", "./output/responses", "response.go", data)
+	err := generateCodeFile("./templates/response.tmpl", "./output/responses", "response.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -124,7 +131,7 @@ func createResponse(data interface{}) {
 
 func createModel(data interface{}) {
 	// Generate the code file
-	err := generateCodeFile("model.tmpl", "./output/models", "model.go", data)
+	err := generateCodeFile("./templates/model.tmpl", "./output/models", "model.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -132,10 +139,29 @@ func createModel(data interface{}) {
 
 func createSetup(DBname string) {
 	// Define the data for the template
-	data := EnvData{DBname}
+	data := setupData{DBname}
 
 	// Generate the code file
-	err := generateCodeFile("setup.tmpl", "./output/configs", "setup.go", data)
+	err := generateCodeFile("./templates/setup.tmpl", "./output/configs", "setup.go", data)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func createEnvc(data interface{}) {
+	// Generate the code file
+	err := generateCodeFile("./templates/envc.tmpl", "./output/configs", "env.go", data)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func createController(ColletionName string) {
+	// Define the data for the template
+	data := controllerData{ColletionName}
+
+	// Generate the code file
+	err := generateCodeFile("./templates/controller.tmpl", "./output/controllers", "controller.go", data)
 	if err != nil {
 		panic(err)
 	}
