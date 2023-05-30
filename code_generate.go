@@ -1,9 +1,12 @@
 package main
 
 import (
+	"net/http"
 	"os"
-	"text/template"
 	"path/filepath"
+	"text/template"
+
+	"github.com/labstack/echo/v4"
 )
 
 type Data struct {
@@ -40,9 +43,17 @@ func generateCodeFile(templatePath string, folderPath string, outputPath string,
 	return nil
 }
 
-func createMain() {
+func getInputs(c echo.Context) error{
+	createMain("6050")
+	createEnv()
+	createRoute()
+
+	return c.JSON(http.StatusCreated,"Successfully code generated")
+}
+
+func createMain(Port string) {
 	// Define the data for the template
-	data := Data{Port: "6060"}
+	data := Data{Port}
 
 	// Generate the code file
 	err := generateCodeFile("main.tmpl", "./output", "main.go", data)
@@ -85,7 +96,10 @@ func createResponse() {
 }
 
 func main() {
-	createMain()
-	createEnv()
-	createRoute()
+	e := echo.New()
+	e.POST("/input", getInputs)
+
+
+
+	e.Logger.Fatal(e.Start(":8080"))
 }
