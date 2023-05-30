@@ -161,7 +161,7 @@ func createController(ColletionName string) {
 	data := controllerData{ColletionName}
 
 	// Generate the code file
-	err := generateCodeFile("./templates/controller.tmpl", "./output/controllers", "controller.go", data)
+	err := generateCodeFile("./template/controller.tmpl", "./output/controllers", "controller.go", data)
 	if err != nil {
 		panic(err)
 	}
