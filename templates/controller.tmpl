@@ -15,7 +15,7 @@ import (
 )
 
 
-var userCollection *mongo.Collection = configs.GetCollection(configs.DB, {{.ColletionName}})
+var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "{{.ColletionName}}")
 
 //function to create user
 func CreateUser(c echo.Context) error {			
