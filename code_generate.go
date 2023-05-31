@@ -31,7 +31,7 @@ type InputData struct {
 	Port 			string `json:"port"`
 	MongoUri 		string `json:mongouri`
 	DBname 			string `json:dbname`
-	CollectionName string `json:collectionname`
+	CollectionName  string `json:collectionname`
 }
 
 func generateCodeFile(templatePath string, folderPath string, outputPath string, data interface{}) error {
