@@ -28,7 +28,7 @@ type controllerData struct{
 }
 
 type InputData struct {
-	Port string `json:"port"`
+	Port 			string `json:"port"`
 	MongoUri string `json:mongouri`
 	DBname string `json:dbname`
 	CollectionName string `json:collectionname`
