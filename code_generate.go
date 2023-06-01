@@ -131,10 +131,7 @@ func createModel(data interface{}) {
 	}
 }
 
-func createSetup(DBname string) {
-	// Define the data for the template
-	data := setupData{DBname}
-
+func createSetup(data InputData) {
 	// Generate the code file
 	err := generateCodeFile("./templates/setup.tmpl", "./output/configs", "setup.go", data)
 	if err != nil {
