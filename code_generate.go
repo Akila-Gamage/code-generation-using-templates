@@ -10,9 +10,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 )
-type EnvData struct {
-	MongoUri string
-}
+
 
 type setupData struct {
 	DBname string
