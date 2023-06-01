@@ -11,10 +11,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-type controllerData struct{
-	ColletionName string
-}
-
 type InputData struct {
 	Port 			string `json:"port"`
 	MongoUri 		string `json:mongouri`
