@@ -11,11 +11,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-
-type setupData struct {
-	DBname string
-}
-
 type controllerData struct{
 	ColletionName string
 }
