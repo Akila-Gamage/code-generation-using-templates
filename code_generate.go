@@ -10,11 +10,6 @@ import (
 
 	"github.com/labstack/echo/v4"
 )
-
-type MainData struct {
-	Port string
-}
-
 type EnvData struct {
 	MongoUri string
 }
