@@ -147,10 +147,7 @@ func createEnvc(data interface{}) {
 	}
 }
 
-func createController(ColletionName string) {
-	// Define the data for the template
-	data := controllerData{ColletionName}
-
+func createController(data InputData) {
 	// Generate the code file
 	err := generateCodeFile("./templates/controller.tmpl", "./output/controllers", "controller.go", data)
 	if err != nil {
