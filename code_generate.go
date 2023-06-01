@@ -79,22 +79,19 @@ func getInputs(c echo.Context) error{
 	}
 
 	// Use the inputData in your code generation functions
-	createMain(inputData.Port)
-	createEnv(inputData.MongoUri)
+	createMain(inputData)
+	createEnv(inputData)
 	createRoute(nil)
 	createResponse(nil)
 	createModel(nil)
-	createSetup(inputData.DBname)
+	createSetup(inputData)
 	createEnvc(nil)
-	createController(inputData.CollectionName)
+	createController(inputData)
 
 	return c.JSON(http.StatusCreated,"Successfully code generated")
 }
 
-func createMain(Port string) {
-	// Define the data for the template
-	data := MainData{Port}
-
+func createMain(data InputData) {
 	// Generate the code file
 	err := generateCodeFile("./templates/main.tmpl", "./output", "main.go", data)
 	if err != nil {
@@ -102,10 +99,7 @@ func createMain(Port string) {
 	}
 }
 
-func createEnv(Mongouri string) {
-	// Define the data for the template
-	data := EnvData{Mongouri}
-
+func createEnv(data InputData) {
 	// Generate the code file
 	err := generateCodeFile("./templates/env.tmpl", "./output", ".env", data)
 	if err != nil {
