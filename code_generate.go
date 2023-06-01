@@ -11,6 +11,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+//struct to represent the input data
 type InputData struct {
 	Port 			string `json:"port"`
 	MongoUri 		string `json:mongouri`
@@ -25,7 +26,7 @@ func generateCodeFile(templatePath string, folderPath string, outputPath string,
 		return err
 	}
 
-	// Create the output file in the desired folder
+	// Create the output file 
 	outputFolderPath := folderPath // Specify the desired folder path here
 	err = os.MkdirAll(outputFolderPath, os.ModePerm)
 	if err != nil {
@@ -39,7 +40,7 @@ func generateCodeFile(templatePath string, folderPath string, outputPath string,
 	defer outputFile.Close()
 
 
-	// Execute the template with the provided data and write the output to the file
+	// Execute the template 
 	err = tmpl.Execute(outputFile, data)
 	if err != nil {
 		return err
