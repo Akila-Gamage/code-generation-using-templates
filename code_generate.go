@@ -14,9 +14,9 @@ import (
 //struct to represent the input data
 type InputData struct {
 	Port 			string `json:"port"`
-	MongoUri 		string `json:mongouri`
-	DBname 			string `json:dbname`
-	CollectionName  string `json:collectionname`
+	MongoUri 		string `json:"mongouri"`
+	DBname 			string `json:"dbname"`
+	CollectionName  string `json:"collectionname"`
 }
 
 func generateCodeFile(templatePath string, folderPath string, outputPath string, data interface{}) error {
@@ -77,7 +77,7 @@ func getInputs(c echo.Context) error{
 
 func createMain(data InputData) {
 	// Generate the code file
-	err := generateCodeFile("./templates/main.tmpl", "./crud-with-go", "main.go", data)
+	err := generateCodeFile("./templates/main.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go", "main.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -85,7 +85,7 @@ func createMain(data InputData) {
 
 func createEnv(data InputData) {
 	// Generate the code file
-	err := generateCodeFile("./templates/env.tmpl", "./crud-with-go", ".env", data)
+	err := generateCodeFile("./templates/env.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go", ".env", data)
 	if err != nil {
 		panic(err)
 	}
@@ -93,7 +93,7 @@ func createEnv(data InputData) {
 
 func createRoute(data interface{}) {
 	// Generate the code file
-	err := generateCodeFile("./templates/route.tmpl", "./crud-with-go/routes", "route.go", data)
+	err := generateCodeFile("./templates/route.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go/routes", "route.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -101,7 +101,7 @@ func createRoute(data interface{}) {
 
 func createResponse(data interface{}) {
 	// Generate the code file
-	err := generateCodeFile("./templates/response.tmpl", "./crud-with-go/responses", "response.go", data)
+	err := generateCodeFile("./templates/response.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go/responses", "response.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -109,7 +109,7 @@ func createResponse(data interface{}) {
 
 func createModel(data interface{}) {
 	// Generate the code file
-	err := generateCodeFile("./templates/model.tmpl", "./crud-with-go/models", "model.go", data)
+	err := generateCodeFile("./templates/model.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go/models", "model.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -117,7 +117,7 @@ func createModel(data interface{}) {
 
 func createSetup(data InputData) {
 	// Generate the code file
-	err := generateCodeFile("./templates/setup.tmpl", "./crud-with-go/configs", "setup.go", data)
+	err := generateCodeFile("./templates/setup.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go/configs", "setup.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -125,7 +125,7 @@ func createSetup(data InputData) {
 
 func createEnvc(data interface{}) {
 	// Generate the code file
-	err := generateCodeFile("./templates/envc.tmpl", "./crud-with-go/configs", "env.go", data)
+	err := generateCodeFile("./templates/envc.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go/configs", "env.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -133,7 +133,7 @@ func createEnvc(data interface{}) {
 
 func createController(data InputData) {
 	// Generate the code file
-	err := generateCodeFile("./templates/controller.tmpl", "./crud-with-go/controllers", "controller.go", data)
+	err := generateCodeFile("./templates/controller.tmpl", "/Users/akilagamage/Documents/go-workspace/CrudWithGoGenerate/crud-with-go/controllers", "controller.go", data)
 	if err != nil {
 		panic(err)
 	}
@@ -144,5 +144,5 @@ func main() {
 
 	e.POST("/input", getInputs)
 
-	e.Logger.Fatal(e.Start(":8080"))
+	e.Logger.Fatal(e.Start(":6050"))
 }
